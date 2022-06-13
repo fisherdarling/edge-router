@@ -4,11 +4,7 @@ pub(crate) mod response;
 pub(crate) mod router;
 pub(crate) mod service;
 
-use crate::body::Body;
-
 pub use crate::error::{BoxError, Error};
+pub use crate::response::Response;
 
 pub type Request<B> = http::Request<B>;
-pub type Response<B = Body> = http::Response<B>;
-// pub type Response<B =
-// pub type Request<B> = http::Request<B>;
