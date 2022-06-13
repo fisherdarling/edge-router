@@ -19,6 +19,7 @@ use crate::body::Body;
 mod append_headers;
 mod into_response;
 mod into_response_parts;
+pub(crate) mod redirect;
 
 pub use self::{
     append_headers::AppendHeaders,

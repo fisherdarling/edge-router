@@ -1,3 +1,4 @@
+#[macro_export]
 macro_rules! define_rejection {
     (
         #[status = $status:ident]
@@ -42,6 +43,7 @@ macro_rules! define_rejection {
     };
 }
 
+#[macro_export]
 macro_rules! composite_rejection {
     (
         $(#[$m:meta])*
@@ -100,6 +102,7 @@ macro_rules! composite_rejection {
     };
 }
 
+#[macro_export]
 macro_rules! all_the_tuples {
     ($name:ident) => {
         $name!(T1);

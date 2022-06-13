@@ -1,3 +1,13 @@
+// The code in this module `crate::response` is adapted from the crate `axum`
+// under the following license:
+/*
+Copyright 2021 Axum Contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
 use super::{IntoResponseParts, Response, ResponseParts};
 use crate::{body, BoxError};
 use bytes::{buf::Chain, Buf, Bytes, BytesMut};
@@ -163,7 +173,7 @@ where
 
 impl<B> IntoResponse for Response<B>
 where
-    B: http_body::Body<Data = Bytes> + Send + 'static,
+    B: http_body::Body<Data = Bytes> + 'static,
     B::Error: Into<BoxError>,
 {
     fn into_response(self) -> Response {
@@ -209,8 +219,8 @@ where
 
 impl<B, F> IntoResponse for MapData<B, F>
 where
-    B: http_body::Body + Send + 'static,
-    F: FnMut(B::Data) -> Bytes + Send + 'static,
+    B: http_body::Body + 'static,
+    F: FnMut(B::Data) -> Bytes + 'static,
     B::Error: Into<BoxError>,
 {
     fn into_response(self) -> Response {
@@ -220,8 +230,8 @@ where
 
 impl<B, F, E> IntoResponse for MapErr<B, F>
 where
-    B: http_body::Body<Data = Bytes> + Send + 'static,
-    F: FnMut(B::Error) -> E + Send + 'static,
+    B: http_body::Body<Data = Bytes> + 'static,
+    F: FnMut(B::Error) -> E + 'static,
     E: Into<BoxError>,
 {
     fn into_response(self) -> Response {
@@ -271,8 +281,8 @@ impl IntoResponse for BytesMut {
 
 impl<T, U> IntoResponse for Chain<T, U>
 where
-    T: Buf + Unpin + Send + 'static,
-    U: Buf + Unpin + Send + 'static,
+    T: Buf + Unpin + 'static,
+    U: Buf + Unpin + 'static,
 {
     fn into_response(self) -> Response {
         let (first, second) = self.into_inner();
@@ -516,4 +526,4 @@ macro_rules! impl_into_response {
     }
 }
 
-all_the_tuples!(impl_into_response);
+crate::all_the_tuples!(impl_into_response);
